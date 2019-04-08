@@ -6,6 +6,7 @@ const requestApiKey = async () => {
   const cachedKey = localStorage.getItem('apiKey')
 
   if (cachedKey) {
+    console.log('Cached key ' + cachedKey + ' used!')
     return cachedKey
   } else {
     try {
@@ -14,8 +15,10 @@ const requestApiKey = async () => {
         .then(result => result.key)
 
       localStorage.setItem('apiKey', apiKey)
+      console.log('New key ' + apiKey + ' used!')
       return apiKey
     } catch (err) {
+      console.log('Error fetching API key!')
       return err
     }
   }
@@ -28,7 +31,9 @@ const sendRequest = async (params, limit = 10) => {
     key
   })
 
-  const { status, message, ...response } = await fetch(`${url}?${qs}`).then(
+  let fullUrl = `${url}?${qs}`;
+  console.log('Fetching URL: ' + fullUrl);
+  const { status, message, ...response } = await fetch(fullUrl).then(
     response => response.json()
   )
 
