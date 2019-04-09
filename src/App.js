@@ -20,6 +20,14 @@ class Book extends Component {
       <>
         <strong className="title">{book.title}</strong>
         <div className="author">{book.author}</div>
+        <div className="buttons">
+          <button type="button" className="btn btn-success">
+            Editera
+          </button>
+          <button type="button" className="btn btn-danger">
+            Ta bort
+          </button>
+        </div>
       </>
     );
   }
@@ -43,6 +51,7 @@ class Form extends Component {
       if (resp.status === 'success') {
         this.props.onSubmit(resp.id, title, author); // Callback to APP to tell it to update the book list
         this.setState({ title: '', author: '' }); // Clear input fields        
+        window.alert('Boken har lagts till! Det krävdes ' + resp.tryCount + ' försök.');
       } else {
         window.alert('Fel! Kunde inte lägga till bok. Meddelande: ' + resp.message);
       }
@@ -95,6 +104,7 @@ class App extends Component {
     books: [],
   };
 
+  // Add new book to the visible list without having to fetch the whole list again
   addNewBook = (id, title, author) => {
     console.log('App: New book added');
     this.setState(prevState => ({
@@ -102,7 +112,8 @@ class App extends Component {
     }))
   }
 
-  fetchBooks() {
+  // Fetch book list from Rest API
+  fetchBooks(showAlerts) {
     apiModule.fetchBooks().then(resp => {
       console.log('Response: ', resp);
       console.log('ID: ', resp.id);
@@ -112,18 +123,22 @@ class App extends Component {
         this.setState(() => ({
           books: resp.data
         }))
-      } else {
-        window.alert('Fel! Kunde inte hämta böcker. Meddelande: ' + resp.message);
+        if (showAlerts) {
+          window.alert('Boklistan har uppdaterats! Det krävdes ' + resp.tryCount + ' försök.');
+        }
+      } else if (showAlerts) {
+        window.alert('Fel! Kunde inte uppdatera boklistan. Meddelande: ' + resp.message);
       }
     });
   }
 
+  // After all the elements of the page is rendered correctly, this method is called.
   componentDidMount() {
-    this.fetchBooks();
+    this.fetchBooks(false);
   }
 
   handleUpdateListClick = () => {
-    this.fetchBooks();
+    this.fetchBooks(true);
   };
 
   render() {
@@ -139,9 +154,9 @@ class App extends Component {
           <div className="container">
             <div className="col-12">
               <ul className="list-group">
-                <li className="list-item list-group-item d-flex align-items-center">
+                <li className="list-item list-group-item d-flex align-items-center list-heading">
                   <strong className="title">Titel</strong>
-                  <div className="author">Författare</div>
+                  <strong className="author">Författare</strong>
                   <div className="buttons">
                     <button type="button" className="btn btn-success" onClick={this.handleUpdateListClick}>
                       Uppdatera lista
