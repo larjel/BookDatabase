@@ -3,13 +3,6 @@ import Header from './components/ui/Header/Header'
 import * as apiModule from './utils/api.js'
 
 //-----------------------------------------------------------------------------
-const testData = [
-  { id: 1, title: "Stone Cold", author: "Dan Abramov" },
-  { id: 2, title: "Mountain High", author: "Sophie Alpert" },
-  { id: 3, title: "Kalla Vindar", author: "Sebastian Markbåge" },
-];
-
-//-----------------------------------------------------------------------------
 const BookList = (props) => (
   <div>
     {props.books.map(book =>
@@ -34,7 +27,9 @@ class Book extends Component {
 
 //-----------------------------------------------------------------------------
 class Form extends Component {
+
   state = { title: '', author: '' };
+
   handleSubmit = (event) => {
     event.preventDefault(); // Prevent the normal HTML submit from taking place
     let title = this.state.title;
@@ -85,12 +80,9 @@ class Form extends Component {
             required
           />
         </div>
-        <button
-          type="submit"
-          className="btn btn-primary btn-lg btn-block"
-        >
+        <button type="submit" className="btn btn-primary btn-lg btn-block">
           Skicka
-              </button>
+        </button>
       </form>
     );
   }
@@ -100,14 +92,39 @@ class Form extends Component {
 class App extends Component {
 
   state = {
-    books: testData,
+    books: [],
   };
+
   addNewBook = (id, title, author) => {
     console.log('App: New book added');
     this.setState(prevState => ({
       books: [...prevState.books, { id, title, author }] // Like concat
     }))
   }
+
+  fetchBooks() {
+    apiModule.fetchBooks().then(resp => {
+      console.log('Response: ', resp);
+      console.log('ID: ', resp.id);
+      console.log('Data: ', resp.data);
+      if (resp.status === 'success') {
+        console.log('fetchBooks() success!');
+        this.setState(() => ({
+          books: resp.data
+        }))
+      } else {
+        window.alert('Fel! Kunde inte hämta böcker. Meddelande: ' + resp.message);
+      }
+    });
+  }
+
+  componentDidMount() {
+    this.fetchBooks();
+  }
+
+  handleUpdateListClick = () => {
+    this.fetchBooks();
+  };
 
   render() {
     return (
@@ -125,6 +142,11 @@ class App extends Component {
                 <li className="list-item list-group-item d-flex align-items-center">
                   <strong className="title">Titel</strong>
                   <div className="author">Författare</div>
+                  <div className="buttons">
+                    <button type="button" className="btn btn-success" onClick={this.handleUpdateListClick}>
+                      Uppdatera lista
+                    </button>
+                  </div>
                 </li>
                 <BookList books={this.state.books} />
               </ul>
