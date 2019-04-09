@@ -24,7 +24,7 @@ const requestApiKey = async () => {
   }
 }
 
-const sendRequest = async (params, limit = 10) => {
+const sendRequest = async (params, limit = 10, tryCount = 1) => {
   const key = await requestApiKey()
   const qs = getQueryString({
     ...params,
@@ -38,10 +38,10 @@ const sendRequest = async (params, limit = 10) => {
   )
 
   if (status === 'success') {
-    return { ...response, status }
+    return { ...response, status, tryCount }
   } else if (limit > 0 && status === 'error') {
-    console.log({ limit, message })
-    return sendRequest(params, limit - 1)
+    console.log('Retrying request. Limit=' + limit + ' Message=' + message);
+    return sendRequest(params, limit - 1, tryCount + 1)
   } else {
     return { status, message }
   }
@@ -55,7 +55,7 @@ export const fetchBooks = async () => {
   return await sendRequest(params)
 }
 
-export const addBook = async (title, author, limit = 10) => {
+export const addBook = async (title, author) => {
   const params = {
     op: 'insert',
     title,
