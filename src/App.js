@@ -6,9 +6,7 @@ import * as apiModule from './utils/api.js'
 const BookList = (props) => (
   <div>
     {props.books.map(book =>
-      <li className="list-item list-group-item d-flex align-items-center" key={book.id}>
-        <Book {...book} />
-      </li>)}
+      <Book key={book.id} {...book} />)}
   </div>
 );
 
@@ -17,7 +15,7 @@ class Book extends Component {
   render() {
     const book = this.props;
     return (
-      <>
+      <li className="list-item list-group-item d-flex align-items-center">
         <strong className="title">{book.title}</strong>
         <div className="author">{book.author}</div>
         <div className="buttons">
@@ -28,7 +26,7 @@ class Book extends Component {
             Ta bort
           </button>
         </div>
-      </>
+      </li>
     );
   }
 }
