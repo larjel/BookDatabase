@@ -133,7 +133,7 @@ class App extends Component {
         <div className="container">
           <div className="row form-section">
             {this.state.editing ? (
-              <EditForm addBookToList={this.addBookToList} setEditing={this.setEditing} book={this.state.bookToEdit} updateBookInList={this.updateBookInList} />
+              <EditForm updateBookInList={this.updateBookInList} setEditing={this.setEditing} book={this.state.bookToEdit} />
             ) : (
                 <AddForm addBookToList={this.addBookToList} />
               )}
