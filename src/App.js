@@ -12,6 +12,19 @@ const BookList = (props) => (
 
 //-----------------------------------------------------------------------------
 class Book extends Component {
+
+  handleRemoveBookClick = () => {
+    const book = this.props;
+    apiModule.removeBook(book.id).then(resp => {
+      if (resp.status === 'success') {
+        console.log('Remove book success!');
+        window.alert('Boken har tagits bort! Det krävdes ' + resp.tryCount + ' försök.');
+      } else {
+        window.alert('Fel! Kunde inte ta bort boken. Meddelande: ' + resp.message);
+      }
+    });
+  };
+
   render() {
     const book = this.props;
     return (
@@ -22,7 +35,7 @@ class Book extends Component {
           <button type="button" className="btn btn-success">
             Editera
           </button>
-          <button type="button" className="btn btn-danger">
+          <button type="button" className="btn btn-danger" onClick={this.handleRemoveBookClick}>
             Ta bort
           </button>
         </div>
@@ -47,7 +60,7 @@ class Form extends Component {
       console.log('ID: ', resp.id);
       console.log('Status: ', resp.status);
       if (resp.status === 'success') {
-        this.props.onSubmit(resp.id, title, author); // Callback to APP to tell it to update the book list
+        this.props.addBookToList(resp.id, title, author); // Callback to APP to tell it to update the book list
         this.setState({ title: '', author: '' }); // Clear input fields        
         window.alert('Boken har lagts till! Det krävdes ' + resp.tryCount + ' försök.');
       } else {
@@ -103,7 +116,7 @@ class App extends Component {
   };
 
   // Add new book to the visible list without having to fetch the whole list again
-  addNewBook = (id, title, author) => {
+  addBookToList = (id, title, author) => {
     console.log('App: New book added');
     this.setState(prevState => ({
       books: [...prevState.books, { id, title, author }] // Like concat
@@ -145,7 +158,7 @@ class App extends Component {
         <Header />
         <div className="container">
           <div className="row form-section">
-            <Form onSubmit={this.addNewBook} />
+            <Form addBookToList={this.addBookToList} />
           </div>
         </div>
         <div className="display-books">
