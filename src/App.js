@@ -6,7 +6,7 @@ import * as apiModule from './utils/api.js'
 const BookList = (props) => (
   <div>
     {props.books.map(book =>
-      <Book removeBook={props.removeBook} key={book.id} {...book} />)}
+      <Book {...props} key={book.id} {...book} />)}
   </div>
 );
 
@@ -18,6 +18,11 @@ class Book extends Component {
     book.removeBook(book.id);
   };
 
+  enableEditingClick = () => {
+    const book = this.props;
+    book.setEditing(true, book);
+  };
+
   render() {
     const book = this.props;
     return (
@@ -25,7 +30,7 @@ class Book extends Component {
         <strong className="title">{book.title}</strong>
         <div className="author">{book.author}</div>
         <div className="buttons">
-          <button type="button" className="btn btn-success">
+          <button type="button" className="btn btn-success" onClick={this.enableEditingClick}>
             Editera
           </button>
           <button type="button" className="btn btn-danger" onClick={this.handleRemoveBookClick}>
@@ -38,7 +43,82 @@ class Book extends Component {
 }
 
 //-----------------------------------------------------------------------------
-class Form extends Component {
+class EditForm extends Component {
+
+  state = {
+    title: this.props.book.title,
+    author: this.props.book.author,
+    id: this.props.book.id
+  };
+
+  handleSubmit = (event) => {
+    event.preventDefault(); // Prevent the normal HTML submit from taking place
+    let title = this.state.title;
+    let author = this.state.author;
+    let id = this.state.id;
+    console.log('Title: ' + title + ' Author: ' + author + ' ID: ' + id);
+
+    apiModule.updateBook(id, title, author).then(resp => {
+      console.log('Status: ', resp.status);
+      if (resp.status === 'success') {
+        //this.props.addBookToList(resp.id, title, author); // Callback to APP to tell it to update the book list
+        //this.setState({ title: '', author: '' }); // Clear input fields        
+        this.props.setEditing(false, {}); // Cancel editing mode
+        window.alert('Boken har uppdaterats! Det krävdes ' + resp.tryCount + ' försök.');
+      } else {
+        window.alert('Fel! Kunde inte uppdatera bok. Meddelande: ' + resp.message);
+      }
+    });
+  };
+
+  handleAbort = () => {
+    this.props.setEditing(false, {});
+  };
+
+  render() {
+    return (
+      <form className="book-form col-6" onSubmit={this.handleSubmit}>
+        <legend>Uppdatera information om boken</legend>
+        <div className="form-group">
+          <input
+            type="text"
+            className="form-control"
+            id="title"
+            aria-describedby="title"
+            placeholder="Ny titel"
+            value={this.state.title}
+            onChange={event => this.setState({ title: event.target.value })}
+            required
+          />
+
+          <input
+            type="text"
+            className="form-control"
+            id="author"
+            rows="3"
+            data-gramm="true"
+            data-txt_gramm_id="63b74fb6-c7e4-7f0e-0c1f-438d47ac87a0"
+            data-gramm_id="63b74fb6-c7e4-7f0e-0c1f-438d47ac87a0"
+            data-gramm_editor="true"
+            placeholder="Ny författare"
+            value={this.state.author}
+            onChange={event => this.setState({ author: event.target.value })}
+            required
+          />
+        </div>
+        <button type="submit" className="btn btn-success">
+          Uppdatera
+          </button>
+        <button type="button" className="btn btn-danger btn-update-abort" onClick={this.handleAbort}>
+          Avbryt
+          </button>
+      </form>
+    );
+  }
+}
+
+//-----------------------------------------------------------------------------
+class AddForm extends Component {
 
   state = { title: '', author: '' };
 
@@ -106,6 +186,8 @@ class App extends Component {
 
   state = {
     books: [],
+    editing: false,
+    bookToEdit: {},
   };
 
   // Add new book to the visible list without having to fetch the whole list again
@@ -126,6 +208,13 @@ class App extends Component {
         window.alert('Fel! Kunde inte ta bort boken. Meddelande: ' + resp.message);
       }
     });
+  };
+
+  setEditing = (active, book) => {
+    this.setState(() => ({
+      bookToEdit: book,
+      editing: active
+    }))
   };
 
   // Fetch book list from Rest API
@@ -163,7 +252,11 @@ class App extends Component {
         <Header />
         <div className="container">
           <div className="row form-section">
-            <Form addBookToList={this.addBookToList} />
+            {this.state.editing ? (
+              <EditForm addBookToList={this.addBookToList} setEditing={this.setEditing} book={this.state.bookToEdit} />
+            ) : (
+                <AddForm addBookToList={this.addBookToList} />
+              )}
           </div>
         </div>
         <div className="display-books">
@@ -179,7 +272,7 @@ class App extends Component {
                     </button>
                   </div>
                 </li>
-                <BookList books={this.state.books} removeBook={this.removeBook} />
+                <BookList books={this.state.books} removeBook={this.removeBook} setEditing={this.setEditing} />
               </ul>
             </div>
           </div>
