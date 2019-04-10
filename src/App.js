@@ -6,7 +6,7 @@ import * as apiModule from './utils/api.js'
 const BookList = (props) => (
   <div>
     {props.books.map(book =>
-      <Book key={book.id} {...book} />)}
+      <Book removeBook={props.removeBook} key={book.id} {...book} />)}
   </div>
 );
 
@@ -15,14 +15,7 @@ class Book extends Component {
 
   handleRemoveBookClick = () => {
     const book = this.props;
-    apiModule.removeBook(book.id).then(resp => {
-      if (resp.status === 'success') {
-        console.log('Remove book success!');
-        window.alert('Boken har tagits bort! Det krävdes ' + resp.tryCount + ' försök.');
-      } else {
-        window.alert('Fel! Kunde inte ta bort boken. Meddelande: ' + resp.message);
-      }
-    });
+    book.removeBook(book.id);
   };
 
   render() {
@@ -123,6 +116,18 @@ class App extends Component {
     }))
   }
 
+  removeBook = (bookId) => {
+    apiModule.removeBook(bookId).then(resp => {
+      if (resp.status === 'success') {
+        console.log('Remove book success!');
+        this.fetchBooks(false);
+        window.alert('Boken har tagits bort! Det krävdes ' + resp.tryCount + ' försök.');
+      } else {
+        window.alert('Fel! Kunde inte ta bort boken. Meddelande: ' + resp.message);
+      }
+    });
+  };
+
   // Fetch book list from Rest API
   fetchBooks(showAlerts) {
     apiModule.fetchBooks().then(resp => {
@@ -174,7 +179,7 @@ class App extends Component {
                     </button>
                   </div>
                 </li>
-                <BookList books={this.state.books} />
+                <BookList books={this.state.books} removeBook={this.removeBook} />
               </ul>
             </div>
           </div>
