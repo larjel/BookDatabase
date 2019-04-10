@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Header from './components/ui/Header/Header'
+import Header from './components/Header'
 import * as apiModule from './utils/api.js'
 
 //-----------------------------------------------------------------------------
