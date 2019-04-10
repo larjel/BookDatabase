@@ -84,7 +84,6 @@ class EditForm extends Component {
             type="text"
             className="form-control"
             id="title"
-            aria-describedby="title"
             placeholder="Ny titel"
             value={this.state.title}
             onChange={event => this.setState({ title: event.target.value })}
@@ -95,11 +94,6 @@ class EditForm extends Component {
             type="text"
             className="form-control"
             id="author"
-            rows="3"
-            data-gramm="true"
-            data-txt_gramm_id="63b74fb6-c7e4-7f0e-0c1f-438d47ac87a0"
-            data-gramm_id="63b74fb6-c7e4-7f0e-0c1f-438d47ac87a0"
-            data-gramm_editor="true"
             placeholder="Ny författare"
             value={this.state.author}
             onChange={event => this.setState({ author: event.target.value })}
@@ -151,7 +145,6 @@ class AddForm extends Component {
             type="text"
             className="form-control"
             id="title"
-            aria-describedby="title"
             placeholder="Lägg till titel"
             value={this.state.title}
             onChange={event => this.setState({ title: event.target.value })}
@@ -162,11 +155,6 @@ class AddForm extends Component {
             type="text"
             className="form-control"
             id="author"
-            rows="3"
-            data-gramm="true"
-            data-txt_gramm_id="63b74fb6-c7e4-7f0e-0c1f-438d47ac87a0"
-            data-gramm_id="63b74fb6-c7e4-7f0e-0c1f-438d47ac87a0"
-            data-gramm_editor="true"
             placeholder="Lägg till författare"
             value={this.state.author}
             onChange={event => this.setState({ author: event.target.value })}
@@ -261,20 +249,18 @@ class App extends Component {
         </div>
         <div className="display-books">
           <div className="container">
-            <div className="col-12">
-              <ul className="list-group">
-                <li className="list-item list-group-item d-flex align-items-center list-heading">
-                  <strong className="title">Titel</strong>
-                  <strong className="author">Författare</strong>
-                  <div className="buttons">
-                    <button type="button" className="btn btn-success" onClick={this.handleUpdateListClick}>
-                      Uppdatera lista
+            <ul className="list-group">
+              <li className="list-item list-group-item d-flex align-items-center list-heading">
+                <strong className="title">Titel</strong>
+                <strong className="author">Författare</strong>
+                <div className="buttons">
+                  <button type="button" className="btn btn-success" onClick={this.handleUpdateListClick}>
+                    Uppdatera lista
                     </button>
-                  </div>
-                </li>
-                <BookList books={this.state.books} removeBook={this.removeBook} setEditing={this.setEditing} />
-              </ul>
-            </div>
+                </div>
+              </li>
+              <BookList books={this.state.books} removeBook={this.removeBook} setEditing={this.setEditing} />
+            </ul>
           </div>
         </div>
       </div>
