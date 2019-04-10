@@ -26,7 +26,7 @@ header strong {
 }
 
 .form-section {
-  padding: 90px;
+  padding: 40px;
 }
 
 .book-form {
@@ -80,4 +80,13 @@ header strong {
 
 .btn-update-abort {
   margin-left: 10px;
+}
+
+.container {
+  margin-top: 0px;
+}
+
+.info-box {
+  margin-bottom: 20px;
+  text-align: center;
 }

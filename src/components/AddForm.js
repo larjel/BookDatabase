@@ -18,9 +18,11 @@ class AddForm extends Component {
       if (resp.status === 'success') {
         this.props.addBookToList(resp.id, title, author); // Callback to trigger update of book list
         this.setState({ title: '', author: '' }); // Clear input fields        
-        window.alert('Boken har lagts till! Det krävdes ' + resp.tryCount + ' försök.');
+        this.props.setInfoMessage('Boken har lagts till! Det krävdes ' + resp.tryCount + ' försök.');
       } else {
-        window.alert('Fel! Kunde inte lägga till bok. Meddelande: ' + resp.message);
+        const errorMessage = 'Fel! Kunde inte lägga till bok. Meddelande: ' + resp.message;
+        this.props.setInfoMessage(errorMessage);
+        window.alert(errorMessage);
       }
     });
   };

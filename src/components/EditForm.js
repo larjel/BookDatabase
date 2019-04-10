@@ -21,9 +21,11 @@ class EditForm extends Component {
       if (resp.status === 'success') {
         this.props.updateBookInList(id, title, author); // Callback to trigger update of book list
         this.props.setEditing(false, {}); // Cancel editing mode
-        window.alert('Boken har uppdaterats! Det krävdes ' + resp.tryCount + ' försök.');
+        this.props.setInfoMessage('Boken har uppdaterats! Det krävdes ' + resp.tryCount + ' försök.');
       } else {
-        window.alert('Fel! Kunde inte uppdatera bok. Meddelande: ' + resp.message);
+        const errorMessage = 'Fel! Kunde inte uppdatera bok. Meddelande: ' + resp.message;
+        this.props.setInfoMessage(errorMessage);
+        window.alert(errorMessage);
       }
     });
   };

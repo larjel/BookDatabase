@@ -14,12 +14,20 @@ const BookList = (props) => (
 );
 
 //-----------------------------------------------------------------------------
+const InfoUpdate = (props) => (
+  <div className="book-form col-6 info-box">
+    {props.text}
+  </div>
+);
+
+//-----------------------------------------------------------------------------
 class App extends Component {
 
   state = {
     books: [], // The list of books. Will be populated via the Rest API.
     editing: false, // Is book editing mode enabled?
     bookToEdit: {}, // Holds book to edit (if editing mode enabled).
+    infoMessage: 'Välkommen till bokdatabasen!',
   };
 
   /**
@@ -82,9 +90,8 @@ class App extends Component {
 
   /**
    * Fetch list of books from the database via the Rest API.
-   * @param {boolean} showAlerts If to display popup alert when list is updated.
    */
-  fetchBooks(showAlerts) {
+  fetchBooks() {
     apiModule.fetchBooks().then(resp => {
       console.log('Response: ', resp);
       console.log('ID: ', resp.id);
@@ -94,11 +101,11 @@ class App extends Component {
         this.setState(() => ({
           books: resp.data
         }))
-        if (showAlerts) {
-          window.alert('Boklistan har uppdaterats! Det krävdes ' + resp.tryCount + ' försök.');
-        }
-      } else if (showAlerts) {
-        window.alert('Fel! Kunde inte uppdatera boklistan. Meddelande: ' + resp.message);
+        this.setInfoMessage('Boklistan har uppdaterats! Det krävdes ' + resp.tryCount + ' försök.');
+      } else {
+        const errorMessage = 'Fel! Kunde inte uppdatera boklistan. Meddelande: ' + resp.message;
+        this.setInfoMessage(errorMessage);
+        window.alert(errorMessage);
       }
     });
   }
@@ -115,15 +122,21 @@ class App extends Component {
     }))
   };
 
+  setInfoMessage = (message) => {
+    this.setState(() => ({
+      infoMessage: message,
+    }))
+  };
+
   /**
    * After all the elements of the page is rendered correctly, this method is called to fetch the list of books.
    */
   componentDidMount() {
-    this.fetchBooks(false);
+    this.fetchBooks();
   }
 
   handleUpdateListClick = () => {
-    this.fetchBooks(true);
+    this.fetchBooks();
   }
 
   render() {
@@ -133,11 +146,13 @@ class App extends Component {
         <div className="container">
           <div className="row form-section">
             {this.state.editing ? (
-              <EditForm updateBookInList={this.updateBookInList} setEditing={this.setEditing} book={this.state.bookToEdit} />
+              <EditForm updateBookInList={this.updateBookInList} setEditing={this.setEditing}
+                book={this.state.bookToEdit} setInfoMessage={this.setInfoMessage} />
             ) : (
-                <AddForm addBookToList={this.addBookToList} />
+                <AddForm addBookToList={this.addBookToList} setInfoMessage={this.setInfoMessage} />
               )}
           </div>
+          <InfoUpdate text={this.state.infoMessage} />
         </div>
         <div className="display-books">
           <div className="container">
