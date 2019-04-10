@@ -23,9 +23,7 @@ class EditForm extends Component {
         this.props.setEditing(false, {}); // Cancel editing mode
         this.props.setInfoMessage('Boken har uppdaterats! Det krävdes ' + resp.tryCount + ' försök.');
       } else {
-        const errorMessage = 'Fel! Kunde inte uppdatera bok. Meddelande: ' + resp.message;
-        this.props.setInfoMessage(errorMessage);
-        window.alert(errorMessage);
+        this.props.setInfoMessage('Fel! Kunde inte uppdatera bok. Meddelande: ' + resp.message, true);
       }
     });
   };

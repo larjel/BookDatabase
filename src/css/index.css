@@ -69,7 +69,7 @@ header strong {
 }
 
 .list-item .buttons {
-  flex: 1 1 15%;
+  flex: 1 1 25%;
   display: flex;
   justify-content: flex-end;
 }

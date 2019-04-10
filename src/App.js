@@ -81,9 +81,9 @@ class App extends Component {
       if (resp.status === 'success') {
         console.log('Remove book success!');
         this.removeBookFromList(bookId);
-        window.alert('Boken har tagits bort! Det krävdes ' + resp.tryCount + ' försök.');
+        this.setInfoMessage('Boken har tagits bort! Det krävdes ' + resp.tryCount + ' försök.');
       } else {
-        window.alert('Fel! Kunde inte ta bort boken. Meddelande: ' + resp.message);
+        this.setInfoMessage('Fel! Kunde inte ta bort boken. Meddelande: ' + resp.message, true);
       }
     });
   };
@@ -103,9 +103,7 @@ class App extends Component {
         }))
         this.setInfoMessage('Boklistan har uppdaterats! Det krävdes ' + resp.tryCount + ' försök.');
       } else {
-        const errorMessage = 'Fel! Kunde inte uppdatera boklistan. Meddelande: ' + resp.message;
-        this.setInfoMessage(errorMessage);
-        window.alert(errorMessage);
+        this.setInfoMessage('Fel! Kunde inte uppdatera boklistan. Meddelande: ' + resp.message, true);
       }
     });
   }
@@ -122,10 +120,13 @@ class App extends Component {
     }))
   };
 
-  setInfoMessage = (message) => {
+  setInfoMessage = (message, isError = false) => {
     this.setState(() => ({
       infoMessage: message,
     }))
+    if (isError) {
+      window.alert(message);
+    }
   };
 
   /**
@@ -137,6 +138,14 @@ class App extends Component {
 
   handleUpdateListClick = () => {
     this.fetchBooks();
+  }
+
+  handleClearApiKeyClick = () => {
+    apiModule.clearApiKey();
+    this.setInfoMessage('API-nyckeln har nollställts!');
+    this.setState(prevState => ({
+      books: []
+    }));
   }
 
   render() {
@@ -163,7 +172,10 @@ class App extends Component {
                 <div className="buttons">
                   <button type="button" className="btn btn-success" onClick={this.handleUpdateListClick}>
                     Uppdatera lista
-                    </button>
+                  </button>
+                  <button type="button" className="btn btn-danger" onClick={this.handleClearApiKeyClick}>
+                    Rensa API-nyckel
+                  </button>
                 </div>
               </li>
               <BookList books={this.state.books} removeBook={this.removeBook} setEditing={this.setEditing} />

@@ -2,6 +2,10 @@ import { getQueryString } from './helpers'
 
 export const url = 'https://www.forverkliga.se/JavaScript/api/crud.php'
 
+export function clearApiKey() {
+  localStorage.removeItem('apiKey');
+}
+
 const requestApiKey = async () => {
   const cachedKey = localStorage.getItem('apiKey')
 

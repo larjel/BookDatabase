@@ -20,9 +20,7 @@ class AddForm extends Component {
         this.setState({ title: '', author: '' }); // Clear input fields        
         this.props.setInfoMessage('Boken har lagts till! Det krävdes ' + resp.tryCount + ' försök.');
       } else {
-        const errorMessage = 'Fel! Kunde inte lägga till bok. Meddelande: ' + resp.message;
-        this.props.setInfoMessage(errorMessage);
-        window.alert(errorMessage);
+        this.props.setInfoMessage('Fel! Kunde inte lägga till bok. Meddelande: ' + resp.message, true);
       }
     });
   };
