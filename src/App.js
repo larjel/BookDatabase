@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import Header from './components/Header'
+import Book from './components/Book'
+import EditForm from './components/EditForm'
+import AddForm from './components/AddForm'
 import * as apiModule from './utils/api.js'
 
 //-----------------------------------------------------------------------------
@@ -11,186 +14,65 @@ const BookList = (props) => (
 );
 
 //-----------------------------------------------------------------------------
-class Book extends Component {
-
-  handleRemoveBookClick = () => {
-    const book = this.props;
-    book.removeBook(book.id);
-  };
-
-  enableEditingClick = () => {
-    const book = this.props;
-    book.setEditing(true, book);
-  };
-
-  render() {
-    const book = this.props;
-    return (
-      <li className="list-item list-group-item d-flex align-items-center">
-        <strong className="title">{book.title}</strong>
-        <div className="author">{book.author}</div>
-        <div className="buttons">
-          <button type="button" className="btn btn-success" onClick={this.enableEditingClick}>
-            Editera
-          </button>
-          <button type="button" className="btn btn-danger" onClick={this.handleRemoveBookClick}>
-            Ta bort
-          </button>
-        </div>
-      </li>
-    );
-  }
-}
-
-//-----------------------------------------------------------------------------
-class EditForm extends Component {
-
-  state = {
-    title: this.props.book.title,
-    author: this.props.book.author,
-    id: this.props.book.id
-  };
-
-  handleSubmit = (event) => {
-    event.preventDefault(); // Prevent the normal HTML submit from taking place
-    let title = this.state.title;
-    let author = this.state.author;
-    let id = this.state.id;
-    console.log('Title: ' + title + ' Author: ' + author + ' ID: ' + id);
-
-    apiModule.updateBook(id, title, author).then(resp => {
-      console.log('Status: ', resp.status);
-      if (resp.status === 'success') {
-        //this.props.addBookToList(resp.id, title, author); // Callback to APP to tell it to update the book list
-        //this.setState({ title: '', author: '' }); // Clear input fields        
-        this.props.setEditing(false, {}); // Cancel editing mode
-        window.alert('Boken har uppdaterats! Det krävdes ' + resp.tryCount + ' försök.');
-      } else {
-        window.alert('Fel! Kunde inte uppdatera bok. Meddelande: ' + resp.message);
-      }
-    });
-  };
-
-  handleAbort = () => {
-    this.props.setEditing(false, {});
-  };
-
-  render() {
-    return (
-      <form className="book-form col-6" onSubmit={this.handleSubmit}>
-        <legend>Uppdatera information om boken</legend>
-        <div className="form-group">
-          <input
-            type="text"
-            className="form-control"
-            id="title"
-            placeholder="Ny titel"
-            value={this.state.title}
-            onChange={event => this.setState({ title: event.target.value })}
-            required
-          />
-
-          <input
-            type="text"
-            className="form-control"
-            id="author"
-            placeholder="Ny författare"
-            value={this.state.author}
-            onChange={event => this.setState({ author: event.target.value })}
-            required
-          />
-        </div>
-        <button type="submit" className="btn btn-success">
-          Uppdatera
-          </button>
-        <button type="button" className="btn btn-danger btn-update-abort" onClick={this.handleAbort}>
-          Avbryt
-          </button>
-      </form>
-    );
-  }
-}
-
-//-----------------------------------------------------------------------------
-class AddForm extends Component {
-
-  state = { title: '', author: '' };
-
-  handleSubmit = (event) => {
-    event.preventDefault(); // Prevent the normal HTML submit from taking place
-    let title = this.state.title;
-    let author = this.state.author;
-    console.log('Title: ' + title + ' Author: ' + author);
-
-    apiModule.addBook(title, author).then(resp => {
-      console.log('Response: ', resp);
-      console.log('ID: ', resp.id);
-      console.log('Status: ', resp.status);
-      if (resp.status === 'success') {
-        this.props.addBookToList(resp.id, title, author); // Callback to APP to tell it to update the book list
-        this.setState({ title: '', author: '' }); // Clear input fields        
-        window.alert('Boken har lagts till! Det krävdes ' + resp.tryCount + ' försök.');
-      } else {
-        window.alert('Fel! Kunde inte lägga till bok. Meddelande: ' + resp.message);
-      }
-    });
-  };
-
-  render() {
-    return (
-      <form className="book-form col-6" onSubmit={this.handleSubmit}>
-        <legend>Lägg till dina favoritböcker</legend>
-        <div className="form-group">
-          <input
-            type="text"
-            className="form-control"
-            id="title"
-            placeholder="Lägg till titel"
-            value={this.state.title}
-            onChange={event => this.setState({ title: event.target.value })}
-            required
-          />
-
-          <input
-            type="text"
-            className="form-control"
-            id="author"
-            placeholder="Lägg till författare"
-            value={this.state.author}
-            onChange={event => this.setState({ author: event.target.value })}
-            required
-          />
-        </div>
-        <button type="submit" className="btn btn-primary btn-lg btn-block">
-          Skicka
-        </button>
-      </form>
-    );
-  }
-}
-
-//-----------------------------------------------------------------------------
 class App extends Component {
 
   state = {
-    books: [],
-    editing: false,
-    bookToEdit: {},
+    books: [], // The list of books. Will be populated via the Rest API.
+    editing: false, // Is book editing mode enabled?
+    bookToEdit: {}, // Holds book to edit (if editing mode enabled).
   };
 
-  // Add new book to the visible list without having to fetch the whole list again
+  /**
+   * Add new book to the visible list without having to fetch the whole list again.
+   * @param {number} id The ID of the book to add.
+   * @param {string} title The title of the book to add.
+   * @param {string} author The author of the book to add.
+   */
   addBookToList = (id, title, author) => {
     console.log('App: New book added');
     this.setState(prevState => ({
-      books: [...prevState.books, { id, title, author }] // Like concat
+      books: [...prevState.books, { id, title, author }] // Append new book
     }))
+  };
+
+  /**
+   * Update a book in the visible list without having to fetch the whole list again.
+   * @param {number} id The ID of the book to update.
+   * @param {string} title The (new) title of the book to update.
+   * @param {string} author The (new) author of the book to update.
+   */
+  updateBookInList = (id, title, author) => {
+    this.setState(prevState => {
+      let bookListCopy = [...prevState.books];
+      bookListCopy.forEach(el => {
+        if (el.id === id) {
+          el.title = title;
+          el.author = author;
+        }
+      });
+      return { books: bookListCopy }
+    })
+  };
+
+  /**
+   * Remove a book from the visible list without having to fetch the whole list again.
+   * @param {number} id The ID of the book to remove.
+   */
+  removeBookFromList(id) {
+    this.setState(prevState => ({
+      books: prevState.books.filter(el => el.id !== id)
+    }));
   }
 
+  /**
+   * Remove a book from the database via the Rest API.
+   * @param {number} bookId The ID of the book to remove.
+   */
   removeBook = (bookId) => {
     apiModule.removeBook(bookId).then(resp => {
       if (resp.status === 'success') {
         console.log('Remove book success!');
-        this.fetchBooks(false);
+        this.removeBookFromList(bookId);
         window.alert('Boken har tagits bort! Det krävdes ' + resp.tryCount + ' försök.');
       } else {
         window.alert('Fel! Kunde inte ta bort boken. Meddelande: ' + resp.message);
@@ -198,14 +80,10 @@ class App extends Component {
     });
   };
 
-  setEditing = (active, book) => {
-    this.setState(() => ({
-      bookToEdit: book,
-      editing: active
-    }))
-  };
-
-  // Fetch book list from Rest API
+  /**
+   * Fetch list of books from the database via the Rest API.
+   * @param {boolean} showAlerts If to display popup alert when list is updated.
+   */
   fetchBooks(showAlerts) {
     apiModule.fetchBooks().then(resp => {
       console.log('Response: ', resp);
@@ -225,14 +103,28 @@ class App extends Component {
     });
   }
 
-  // After all the elements of the page is rendered correctly, this method is called.
+  /**
+   * Activate or deactivate the book editing form.
+   * @param {boolean} active If true, editing mode is activated. If false, it is deactivated.
+   * @param {Book} book The book to edit (if editing mode is activated).
+   */
+  setEditing = (active, book) => {
+    this.setState(() => ({
+      bookToEdit: book,
+      editing: active
+    }))
+  };
+
+  /**
+   * After all the elements of the page is rendered correctly, this method is called to fetch the list of books.
+   */
   componentDidMount() {
     this.fetchBooks(false);
   }
 
   handleUpdateListClick = () => {
     this.fetchBooks(true);
-  };
+  }
 
   render() {
     return (
@@ -241,7 +133,7 @@ class App extends Component {
         <div className="container">
           <div className="row form-section">
             {this.state.editing ? (
-              <EditForm addBookToList={this.addBookToList} setEditing={this.setEditing} book={this.state.bookToEdit} />
+              <EditForm addBookToList={this.addBookToList} setEditing={this.setEditing} book={this.state.bookToEdit} updateBookInList={this.updateBookInList} />
             ) : (
                 <AddForm addBookToList={this.addBookToList} />
               )}
