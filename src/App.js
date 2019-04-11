@@ -146,11 +146,15 @@ class App extends Component {
   }
 
   handleClearApiKeyClick = () => {
-    apiModule.clearApiKey();
-    this.setInfoMessage('API-nyckeln har nollställts!');
-    this.setState(prevState => ({
-      books: []
-    }));
+    if (window.confirm('Varning! Om du fortsätter kommer den gamla databasen inte längre vara tillgänglig.')) {
+      apiModule.clearApiKey();
+      this.setInfoMessage('API-nyckeln har nollställts!');
+      this.setState(prevState => ({
+        books: []
+      }));
+    } else {
+      this.setInfoMessage('Operationen avbröts.');
+    }
   }
 
   render() {
