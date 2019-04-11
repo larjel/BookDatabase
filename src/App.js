@@ -27,7 +27,7 @@ class App extends Component {
     books: [], // The list of books. Will be populated via the Rest API.
     editing: false, // Is book editing mode enabled?
     bookToEdit: {}, // Holds book to edit (if editing mode enabled).
-    infoMessage: 'Välkommen till bokdatabasen!',
+    infoMessage: 'Välkommen till bokdatabasen!', // Message to display in page info box
   };
 
   /**
@@ -120,6 +120,11 @@ class App extends Component {
     }))
   };
 
+  /**
+   * Set the message to display in the information box. On error, a popup alert will also be displayed.
+   * @param {string} message Message to display.
+   * @param {boolean} isError Set to true to indicate that it is an error message. Default false.
+   */
   setInfoMessage = (message, isError = false) => {
     this.setState(() => ({
       infoMessage: message,
