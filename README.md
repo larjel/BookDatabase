@@ -1,4 +1,4 @@
-# BOKDATABAS BYGGD MED JAVASCRIPT, REACT OCH AJAX
+# Bokdatabas byggd med JavaScript, React och AJAX
 En webbapplikation som visar en lista med böcker. Den sparar och läser in böckerna i en databas via ett Rest API.
 API:et har funktioner som motsvarar SQL insert, select, update och delete.
 
