@@ -1,6 +1,6 @@
 {
-  "name": "js-react-ajax-lab2",
-  "homepage": "https://larjel.github.io/lab2-js-react-ajax-lars",
+  "name": "library-js-react-ajax",
+  "homepage": "https://larjel.github.io/library-js-react-ajax",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
