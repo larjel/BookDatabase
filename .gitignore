@@ -65,3 +65,6 @@ typings/
 
 #Visual Studio Code
 .vscode/
+
+# Build folder
+build/
