@@ -52,12 +52,11 @@ class App extends Component {
   updateBookInList = (id, title, author) => {
     this.setState(prevState => {
       let bookListCopy = [...prevState.books];
-      bookListCopy.forEach(el => {
-        if (el.id === id) {
-          el.title = title;
-          el.author = author;
-        }
-      });
+      let idx = bookListCopy.findIndex(el => el.id === id);
+      if (idx >= 0) {
+        bookListCopy[idx].title = title;
+        bookListCopy[idx].author = author;
+      }
       return { books: bookListCopy }
     })
   };
