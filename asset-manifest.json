@@ -1,13 +1,13 @@
 {
-  "main.css": "/lab2-js-react-ajax-lars/static/css/main.0be67861.chunk.css",
-  "main.js": "/lab2-js-react-ajax-lars/static/js/main.d865b445.chunk.js",
-  "main.js.map": "/lab2-js-react-ajax-lars/static/js/main.d865b445.chunk.js.map",
-  "runtime~main.js": "/lab2-js-react-ajax-lars/static/js/runtime~main.8631a453.js",
-  "runtime~main.js.map": "/lab2-js-react-ajax-lars/static/js/runtime~main.8631a453.js.map",
-  "static/js/2.130c8112.chunk.js": "/lab2-js-react-ajax-lars/static/js/2.130c8112.chunk.js",
-  "static/js/2.130c8112.chunk.js.map": "/lab2-js-react-ajax-lars/static/js/2.130c8112.chunk.js.map",
-  "index.html": "/lab2-js-react-ajax-lars/index.html",
-  "precache-manifest.15809042736c98958f985b0a467ec691.js": "/lab2-js-react-ajax-lars/precache-manifest.15809042736c98958f985b0a467ec691.js",
-  "service-worker.js": "/lab2-js-react-ajax-lars/service-worker.js",
-  "static/css/main.0be67861.chunk.css.map": "/lab2-js-react-ajax-lars/static/css/main.0be67861.chunk.css.map"
+  "main.css": "/library-js-react-ajax/static/css/main.3f66fb0e.chunk.css",
+  "main.js": "/library-js-react-ajax/static/js/main.e54c3a9f.chunk.js",
+  "main.js.map": "/library-js-react-ajax/static/js/main.e54c3a9f.chunk.js.map",
+  "runtime~main.js": "/library-js-react-ajax/static/js/runtime~main.80394280.js",
+  "runtime~main.js.map": "/library-js-react-ajax/static/js/runtime~main.80394280.js.map",
+  "static/js/2.130c8112.chunk.js": "/library-js-react-ajax/static/js/2.130c8112.chunk.js",
+  "static/js/2.130c8112.chunk.js.map": "/library-js-react-ajax/static/js/2.130c8112.chunk.js.map",
+  "index.html": "/library-js-react-ajax/index.html",
+  "precache-manifest.a2c903baa32b2227ca5d34122869d0ac.js": "/library-js-react-ajax/precache-manifest.a2c903baa32b2227ca5d34122869d0ac.js",
+  "service-worker.js": "/library-js-react-ajax/service-worker.js",
+  "static/css/main.3f66fb0e.chunk.css.map": "/library-js-react-ajax/static/css/main.3f66fb0e.chunk.css.map"
 }
