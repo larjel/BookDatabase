@@ -9,12 +9,10 @@ class AddForm extends Component {
     event.preventDefault(); // Prevent the normal HTML submit from taking place
     let title = this.state.title;
     let author = this.state.author;
-    console.log('Title: ' + title + ' Author: ' + author);
+    console.log('Add book: Title: ' + title + ' Author: ' + author);
 
     apiModule.addBook(title, author).then(resp => {
-      console.log('Response: ', resp);
-      console.log('ID: ', resp.id);
-      console.log('Status: ', resp.status);
+      console.log('Add book response: ', resp);
       if (resp.status === 'success') {
         this.props.addBookToList(resp.id, title, author); // Callback to trigger update of book list
         this.setState({ title: '', author: '' }); // Clear input fields        

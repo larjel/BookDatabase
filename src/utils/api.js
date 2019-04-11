@@ -35,8 +35,8 @@ const sendRequest = async (params, limit = 10, tryCount = 1) => {
     key
   })
 
-  let fullUrl = `${url}?${qs}`;
-  console.log('Fetching URL: ' + fullUrl);
+  const fullUrl = `${url}?${qs}`;
+  console.log('Request URL: ' + fullUrl);
   const { status, message, ...response } = await fetch(fullUrl).then(
     response => response.json()
   )

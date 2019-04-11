@@ -14,10 +14,9 @@ class EditForm extends Component {
     let title = this.state.title;
     let author = this.state.author;
     let id = this.state.id;
-    console.log('Title: ' + title + ' Author: ' + author + ' ID: ' + id);
+    console.log('Update book: Title: ' + title + ' Author: ' + author + ' ID: ' + id);
 
     apiModule.updateBook(id, title, author).then(resp => {
-      console.log('Status: ', resp.status);
       if (resp.status === 'success') {
         this.props.updateBookInList(id, title, author); // Callback to trigger update of book list
         this.props.setEditing(false, {}); // Cancel editing mode
