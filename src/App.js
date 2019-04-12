@@ -1,26 +1,11 @@
 import React, { Component } from 'react'
 import Header from './components/Header'
-import Book from './components/Book'
 import EditForm from './components/EditForm'
 import AddForm from './components/AddForm'
+import BookList from './components/BookList'
+import InfoUpdate from './components/InfoUpdate'
 import * as apiModule from './utils/api.js'
 
-//-----------------------------------------------------------------------------
-const BookList = (props) => (
-  <div>
-    {props.books.map(book =>
-      <Book {...props} key={book.id} {...book} />)}
-  </div>
-);
-
-//-----------------------------------------------------------------------------
-const InfoUpdate = (props) => (
-  <div className="book-form col-6 info-box">
-    {props.text}
-  </div>
-);
-
-//-----------------------------------------------------------------------------
 class App extends Component {
 
   constructor(props) {
