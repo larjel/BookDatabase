@@ -92,9 +92,9 @@ class App extends Component {
     apiModule.fetchBooks().then(resp => {
       console.log('fetchBooks() response: ', resp);
       if (resp.status === 'success') {
-        this.setState(() => ({
+        this.setState({
           books: resp.data
-        }))
+        });
         this.setInfoMessage('Boklistan har uppdaterats! Det krävdes ' + resp.tryCount + ' försök.');
       } else {
         this.setInfoMessage('Fel! Kunde inte uppdatera boklistan. Meddelande: ' + resp.message, true);
@@ -120,9 +120,9 @@ class App extends Component {
    * @param {boolean} isError Set to true to indicate that it is an error message. Default false.
    */
   setInfoMessage = (message, isError = false) => {
-    this.setState(() => ({
+    this.setState({
       infoMessage: message,
-    }))
+    });
     if (isError) {
       window.alert(message);
     }
@@ -143,9 +143,9 @@ class App extends Component {
     if (window.confirm('Varning! Om du fortsätter kommer den gamla databasen inte längre vara tillgänglig.')) {
       apiModule.clearApiKey();
       this.setInfoMessage('API-nyckeln har nollställts!');
-      this.setState(prevState => ({
+      this.setState({
         books: []
-      }));
+      });
     } else {
       this.setInfoMessage('Operationen avbröts.');
     }
