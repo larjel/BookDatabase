@@ -32,6 +32,7 @@ class EditForm extends Component {
 
   handleAbort = () => {
     this.props.setEditing(false, {});
+    this.props.setInfoMessage('Operationen avbröts.');
   };
 
   render() {
