@@ -23,12 +23,15 @@ const InfoUpdate = (props) => (
 //-----------------------------------------------------------------------------
 class App extends Component {
 
-  state = {
-    books: [], // The list of books. Will be populated via the Rest API.
-    editing: false, // Is book editing mode enabled?
-    bookToEdit: {}, // Holds book to edit (if editing mode enabled).
-    infoMessage: 'Välkommen till bokdatabasen!', // Message to display in page info box
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      books: [], // The list of books. Will be populated via the Rest API.
+      editing: false, // Is book editing mode enabled?
+      bookToEdit: {}, // Holds book to edit (if editing mode enabled).
+      infoMessage: 'Välkommen till bokdatabasen!', // Message to display in page info box
+    };
+  }
 
   /**
    * Add new book to the visible list without having to fetch the whole list again.

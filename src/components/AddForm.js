@@ -3,7 +3,10 @@ import * as apiModule from '../utils/api.js'
 
 class AddForm extends Component {
 
-  state = { title: '', author: '' };
+  constructor(props) {
+    super(props);
+    this.state = { title: '', author: '' };
+  }
 
   handleSubmit = (event) => {
     event.preventDefault(); // Prevent the normal HTML submit from taking place

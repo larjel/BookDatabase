@@ -3,11 +3,14 @@ import * as apiModule from '../utils/api.js'
 
 class EditForm extends Component {
 
-  state = {
-    title: this.props.book.title,
-    author: this.props.book.author,
-    id: this.props.book.id
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: this.props.book.title,
+      author: this.props.book.author,
+      id: this.props.book.id
+    };
+  }
 
   handleSubmit = (event) => {
     event.preventDefault(); // Prevent the normal HTML submit from taking place
