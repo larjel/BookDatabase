@@ -8,19 +8,19 @@ self.__precacheManifest = [
     "url": "/library-js-react-ajax/static/js/runtime~main.80394280.js"
   },
   {
-    "revision": "502c29722088df01fafb",
-    "url": "/library-js-react-ajax/static/js/main.1fa60155.chunk.js"
+    "revision": "4747522ca50f095b40c5",
+    "url": "/library-js-react-ajax/static/js/main.bc2445f1.chunk.js"
   },
   {
     "revision": "b0071d16893ca23f9881",
     "url": "/library-js-react-ajax/static/js/2.2c94bd99.chunk.js"
   },
   {
-    "revision": "502c29722088df01fafb",
+    "revision": "4747522ca50f095b40c5",
     "url": "/library-js-react-ajax/static/css/main.24fbf8a5.chunk.css"
   },
   {
-    "revision": "78ceeabe4f74485758bed7d2e7e9381c",
+    "revision": "aba3c0d22d34c94e5d9d901ae4b2514a",
     "url": "/library-js-react-ajax/index.html"
   }
 ];
