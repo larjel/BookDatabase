@@ -96,10 +96,10 @@ class App extends Component {
    * @param {Book} book The book to edit (if editing mode is activated).
    */
   setEditing = (active, book) => {
-    this.setState(() => ({
+    this.setState({
       bookToEdit: book,
       editing: active
-    }))
+    });
   };
 
   /**
